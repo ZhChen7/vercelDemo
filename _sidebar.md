@@ -3,7 +3,6 @@
 - Javascript
 - Typescript
 - React基础
-- React插件
 - React生态
   - [react状态管理](./react/React状态管理对比和原理实现.md)
     - Redux
@@ -18,6 +17,7 @@
 - 设计模式
 - 浏览器
 - promise
+- nodejs
 - HTML&CSS
 - 工具类
   - Docker
@@ -33,4 +33,3 @@
   - nuxt
   - Serverless
 
-- nodejs
