@@ -3,6 +3,7 @@
 - Javascript
 - Typescript
 - React
+  - [Context](/react/Context.md)
   - [useContext](/react/useContext.md)
   - Redux
   - Recoil
