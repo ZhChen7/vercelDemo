@@ -9,9 +9,96 @@
 
 
 
-## Context是什么
+## Context
 
-Context是什么
+> Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法。
+
+在一个典型的 React 应用中，数据是通过 props 属性自上而下（由父及子）进行传递的，但此种用法对于某些类型的属性而言是极其繁琐的（例如：地区偏好，UI 主题），这些属性是应用程序中许多组件都需要的。Context 提供了一种在组件之间共享此类值的方式，而不必显式地通过组件树的逐层传递 props。
+
+
+
+~~~react
+import React, { useState } from "react";
+
+const App = () => {
+  const [count, setcount] = useState(0);
+
+  const handleCount = (num) => {
+    setcount(count + 1);
+    console.log(num);
+  };
+  
+  console.log("我是father");
+  return (
+    <div className="app">
+      <Son count={count} handleFun={handleCount} />
+    </div>
+  );
+};
+
+const Son = (props) => {
+  console.log("我是son");
+  return (
+    <>
+      <h2>Son:{props.count}</h2>
+      <Smallson count={props.count} handleFun={props.handleFun} />
+    </>
+  );
+};
+
+const Smallson = (props) => {
+  console.log("我是Smallson");
+  return (
+    <>
+      Smallson: {props.count}
+      <button
+        onClick={() => {
+          props.handleFun(1);
+        }}
+      >
+        Smallson点击
+      </button>
+    </>
+  );
+};
+
+export default App;
+~~~
+
+
+
+
+
+
+
+## 何时使用 Context
+
+Context 设计目的是为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或首选语言。举个例子，在下面的代码中，我们通过一个 “theme” 属性手动调整一个按钮组件的样式：
+
+~~~js
+class App extends React.Component {
+  render() {
+    return <Toolbar theme="dark" />;
+  }
+}
+
+function Toolbar(props) {
+  // Toolbar 组件接受一个额外的“theme”属性，然后传递给 ThemedButton 组件。
+  // 如果应用中每一个单独的按钮都需要知道 theme 的值，这会是件很麻烦的事，
+  // 因为必须将这个值层层传递所有组件。
+  return (
+    <div>
+      <ThemedButton theme={props.theme} />
+    </div>
+  );
+}
+
+class ThemedButton extends React.Component {
+  render() {
+    return <Button theme={this.props.theme} />;
+  }
+}
+~~~
 
 
 
@@ -21,7 +108,13 @@ Context是什么
 
 
 
+
+
 ## Context的使用
+
+
+
+
 
 
 
@@ -53,10 +146,6 @@ Context是什么
 
 1. `useContext`可以帮助我们跨越组件层级直接传递变量，实现共享
 2. `Context`的作用就是对它所包含的组件树提供全局共享数据的一种技术
-
-
-
-
 
 
 
