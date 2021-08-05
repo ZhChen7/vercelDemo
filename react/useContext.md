@@ -9,7 +9,41 @@
 
 
 
-## useContext官方解释？
+## 什么是 useContext 钩子？
+
+随着 React 钩子的出现，另一种使用上下文的方式在 React 16.8 中可用。我们现在可以使用**useContext hook**来使用上下文。
+
+我们可以将整个上下文对象传递`React.useContext()`给组件顶部的上下文，而不是使用渲染道具。
+
+这是上面使用 useContext 钩子的示例：
+
+```js
+import React from 'react';
+
+export const UserContext = React.createContext();
+
+export default function App() {
+  return (
+    <UserContext.Provider value="Reed">
+      <User />
+    </UserContext.Provider>
+  )
+}
+
+function User() {
+  const value = React.useContext(UserContext);  
+    
+  return <h1>{value}</h1>;
+}
+```
+
+
+
+
+
+
+
+## 官方文档
 
 > ```javascript
 > const value = useContext(MyContext);
