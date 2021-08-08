@@ -3,9 +3,9 @@
 - Javascript
 - Typescript
 - React
-  - [Context](/react/Context.md)
+  - [context](/react/context.md)
   - [useContext](/react/useContext.md)
-  - Redux
+  - [Redux](/react/redux.md)
   - Recoil
   - mobx
   - Apollo
