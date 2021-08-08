@@ -216,9 +216,18 @@ MyContext.displayName = 'MyDisplayName';
 
 
 
+### 总结
 
+1、React Context优点：能够让数据在组件树中传递，基于树形结构共享数据的方式，在某个节点组件开启提供context后，所有后代节点组件都可以获取到共享的数据。
+而props或者state进行多级数据传递，则数据需要自顶下流经过每一级组件，无法跨级。
 
+2、React Context缺点：
 
+- （1）context相当于全局变量， 难以追溯数据源
+- （2）耦合度高，即不利于组件复用也不利于测试
+- （3）当 props 改变或者 setState 被调用，生成新的 context，但是 shouldComponentUpdate 返回的 false 会 block 住 context，导致没有更新。
+
+3、React Context使用：可以通过Provider组件的value来传递数据，也可以通过调用react.createContext()来产生context，然后在Consumer组件获得context中的数据。
 
 
 
