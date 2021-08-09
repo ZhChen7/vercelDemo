@@ -10,6 +10,7 @@
   - mobx
   - Apollo
   - vuex
+  - [组合vs继承](/react/组合vs继承.md)
 - Webpack
 - 前端工程化
 - 性能优化
