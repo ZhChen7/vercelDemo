@@ -318,7 +318,7 @@ export default logProps(Son) // 使用高阶组件对其进行封装
 
 
 
-## `useRef`
+## useRef
 
 > 本质上，`useRef` 就像是可以在其 `.current` 属性中保存一个可变值的“盒子”
 >
@@ -435,7 +435,7 @@ function MeasureExample() {
 
 
 
-## `useImperativeHandle`
+## useImperativeHandle
 
 > ~~~js
 > useImperativeHandle(ref, createHandle, [deps])
