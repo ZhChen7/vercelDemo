@@ -4,6 +4,7 @@
 
 - 为什么需要 react-redux
 - APi的基本使用
+- Redux Hook的使用
 
 
 
@@ -174,3 +175,21 @@ const mapStateToProps = (state) => {
 
 
 ## 实例
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Redux Hook的使用
