@@ -18,7 +18,10 @@
   - [错误边界](/react/错误边界.md)
   - [Refs 转发](/react/Refs转发.md)
   - [Fragments](/react/Fragments.md)
-  - 高阶组件（HOC）
+  - [高阶组件](/react/高阶组件.md)
+  - [Portals](/react/Portals.md)
+  - [性能优化](/react/性能优化.md)
+  - [受控和非受控组件](/react/受控和非受控组件.md)
 - Webpack
 - 前端工程化
 - 性能优化
