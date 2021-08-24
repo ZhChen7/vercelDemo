@@ -12,7 +12,6 @@
   - Apollo
   - vuex
   - [组合vs继承](/react/组合vs继承.md)
-  - fiber
   - react-router(hook)
   - react-dnd(hook)
   - [错误边界](/react/错误边界.md)
@@ -22,6 +21,8 @@
   - [Portals](/react/Portals.md)
   - [性能优化](/react/性能优化.md)
   - [受控和非受控组件](/react/受控和非受控组件.md)
+  - [协调](/react/协调.md)
+  - [fiber](/react/fiber.md)
 - Webpack
 - 前端工程化
 - 性能优化
