@@ -66,7 +66,7 @@
 
 
 
-React 16 的`Reconciler`基于 Fiber 节点实现，被称为 Fiber Reconciler。
+> React 16 的`Reconciler`基于 Fiber 节点实现，被称为 Fiber Reconciler。
 
 
 
