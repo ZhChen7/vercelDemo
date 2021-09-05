@@ -23,11 +23,16 @@
   - [受控和非受控组件](/react/受控和非受控组件.md)
   - [协调](/react/协调.md)
   - [fiber](/react/fiber.md)
+  - [React 顶层API](/react/apiReference.md)
 - Webpack
 - 前端工程化
 - 性能优化
 - 设计模式
 - 浏览器
+  - [Web Worker](/react/webWorker.md)
+  - [Service Workers](/react/seviceWorker.md)
+  - [SharedWorker](/react/sharedWorker.md)
+  - [浏览器的多线程](/react/浏览器的多线程.md)
 - promise
 - nodejs
 - HTML&CSS
