@@ -1,4 +1,4 @@
-# api reference
+# React 顶层 API
 
 ### 本文速览
 
@@ -47,9 +47,17 @@
 
 ## React 顶层 API
 
-`React` 是 React 库的入口。如果你通过使用 `<script>` 标签的方式来加载 React，则可以通过 `React` 全局变量对象来获得 React 的顶层 API。当你使用 ES6 与 npm 时，可以通过编写 `import React from 'react'` 来引入它们。当你使用 ES5 与 npm 时，则可以通过编写 `var React = require('react')` 来引入它们。
+> `React` 是 React 库的入口。如果你通过使用 `<script>` 标签的方式来加载 React，则可以通过 `React` 全局变量对象来获得 React 的顶层 API。当你使用 ES6 与 npm 时，可以通过编写 `import React from 'react'` 来引入它们。当你使用 ES5 与 npm 时，则可以通过编写 `var React = require('react')` 来引入它们。
 
+**目前可以大致分为以下几类：** 
 
+1. 组件类： React.Component 、 React.PureComponent、React.memo；
+2. 创建React元素：React.createElement()、React.createFactory()；
+3. 转换元素：React.cloneElement()、React.isValidElement()、React.Children；
+4. Fragments：React.Fragment 片段；
+5. 引用Refs：React.createRef、React.forwardRef；
+6. 动态加载：React.lazy、React.Suspense；
+7. Hook 是 React 16.8 的新增特性。
 
 
 
@@ -72,7 +80,7 @@ class Greeting extends React.Component {
 }
 ```
 
-### Pure Component
+### PureComponent
 
 > `React.PureComponent` 与 [`React.Component`](https://zh-hans.reactjs.org/docs/react-api.html#reactcomponent) 很相似。两者的区别在于 [`React.Component`](https://zh-hans.reactjs.org/docs/react-api.html#reactcomponent) 并未实现 [`shouldComponentUpdate()`](https://zh-hans.reactjs.org/docs/react-component.html#shouldcomponentupdate)，而 `React.PureComponent` 中以浅层对比 prop 和 state 的方式来实现了该函数。
 >
@@ -86,17 +94,17 @@ class Greeting extends React.Component {
 
 
 
-
-
 ### React.memo
+
+> `React.memo` 为[高阶组件](https://zh-hans.reactjs.org/docs/higher-order-components.html)。
+>
+> 它与 React.PureComponent 非常相似，但它适用于函数组件，但不适用于 class 组件。 默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现。
 
 ```js
 const MyComponent = React.memo(function MyComponent(props) {
   /* 使用 props 渲染 */
 });
 ```
-
-`React.memo` 为[高阶组件](https://zh-hans.reactjs.org/docs/higher-order-components.html)。
 
 如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 `React.memo` 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。
 
@@ -122,11 +130,11 @@ export default React.memo(MyComponent, areEqual);
 
 
 
-
-
 ### createElement
 
-```js
+> `React.createElement` 是一个更加高级的函数，React的`createElement`的第一个参数为元素名称，第二个参数为该元素的一些属性，第二个参数之后接受子元素。所以`createElement`实际上创建了一个树。
+
+```javascript
 React.createElement(
   type,
   [props],
@@ -136,9 +144,41 @@ React.createElement(
 
 创建并返回指定类型的新 [React 元素](https://zh-hans.reactjs.org/docs/rendering-elements.html)。其中的类型参数既可以是标签名字符串（如 `'div'` 或 `'span'`），也可以是 [React 组件](https://zh-hans.reactjs.org/docs/components-and-props.html) 类型 （class 组件或函数组件），或是 [React fragment](https://zh-hans.reactjs.org/docs/react-api.html#reactfragment) 类型。
 
-使用 [JSX](https://zh-hans.reactjs.org/docs/introducing-jsx.html) 编写的代码将会被转换成使用 `React.createElement()` 的形式。如果使用了 JSX 方式，那么一般来说就不需要直接调用 `React.createElement()`。请查阅[不使用 JSX](https://zh-hans.reactjs.org/docs/react-without-jsx.html) 章节获得更多信息。
+使用 [JSX](https://zh-hans.reactjs.org/docs/introducing-jsx.html) 编写的代码将会被转换成使用 `React.createElement()` 的形式。如果使用了 JSX 方式，那么一般来说就不需要直接调用 `React.createElement()`。
 
+~~~js
+const InputForm = React.createElement(
+  "form", { target: "_blank", action: "https://google.com/search" },
+  React.createElement("div", null, "Enter input and click Search"),
+  React.createElement("input", { className: "big-input" }),
+  React.createElement(Button, { label: "Search" }) // 嵌套React DOM
+);
 
+// InputForm 使用 Button 组件，所以我们需要这样做：
+function Button (props) {
+  return React.createElement(
+    "button",
+    { type: "submit" },
+    props.label
+  );
+}
+// 这里的InputForm是React元素而不是组件，我们可以通过 .render 方法直接使用 InputForm
+// ReactDOM.render(React元素, 渲染的目标Node);
+ReactDOM.render(InputForm, mountNode);
+~~~
+
+最后渲染的DOM
+
+```javascript
+<form target="_blank" action="https://google.com/search">
+    <div>Enter input and click Search</div>
+    <input className="big-input" />
+    <Button label="Search" />
+    <!-- Button组件转换
+    <button type="submit">Search</button>
+    -->
+</form>
+```
 
 
 
@@ -152,23 +192,22 @@ React.cloneElement(
 )
 ```
 
-以 `element` 元素为样板克隆并返回新的 React 元素。`config` 中应包含新的 props，`key` 或 `ref`。返回元素的 props 是将新的 props 与原始元素的 props 浅层合并后的结果。新的子元素将取代现有的子元素，如果在 `config` 中未出现 `key` 或 `ref`，那么原始元素的 `key` 和 `ref` 将被保留。
+以 element 元素为样板克隆并返回新的 React 元素。返回元素的 props 是将新的 props 与原始元素的 props 浅层合并后的结果。新的子元素将取代现有的子元素，而来自原始元素的 key 和 ref 将被保留。 React.cloneElement() 几乎等同于：`<element.type {...element.props} {...props}>{children}</element.type>`但是，这也保留了组件的 ref。这意味着当通过 ref 获取子节点时，你将不会意外地从你祖先节点上窃取它。相同的 ref 将添加到克隆后的新元素中。 最为常见的场景就是：
 
-`React.cloneElement()` 几乎等同于：
+1. 克隆某个组件的所有子元素，并添加新的props到各组件子元素中；
 
-```js
-<element.type {...element.props} {...props}>{children}</element.type>
-```
+   ```jsx
+    const pageCmp = React.Children.map(
+        children, (child: any, index) => React.cloneElement(
+            child, {
+                index,
+                activeIndex: this.state.activeIndex,
+            }
+        )
+    );
+   ```
 
-但是，这也保留了组件的 `ref`。这意味着当通过 `ref` 获取子节点时，你将不会意外地从你祖先节点上窃取它。相同的 `ref` 将添加到克隆后的新元素中。如果存在新的 `ref` 或 `key` 将覆盖之前的。
-
-引入此 API 是为了替换已弃用的 `React.addons.cloneWithProps()`。
-
-
-
-
-
-
+2. 实现sticky的功能;
 
 
 
@@ -333,7 +372,7 @@ const ref = React.createRef();
 
 
 
-
+## 异步加载
 
 ### `React.lazy`
 
