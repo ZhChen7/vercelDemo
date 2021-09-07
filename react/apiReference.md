@@ -60,7 +60,7 @@
 - [`React.Component`](https://zh-hans.reactjs.org/docs/react-api.html#reactcomponent)
 - [`React.PureComponent`](https://zh-hans.reactjs.org/docs/react-api.html#reactpurecomponent)
 
-### React.Componen
+### React.Component
 
 `React.Component` 是使用 [ES6 classes](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes) 方式定义 React 组件的基类：
 
