@@ -9,7 +9,7 @@ import ReactDOMServer from 'react-dom/server';
 var ReactDOMServer = require('react-dom/server');
 ```
 
-## 
+
 
 ### 本文速览
 
@@ -25,9 +25,13 @@ var ReactDOMServer = require('react-dom/server');
 
 
 
+------
+
+
+
 ## 参考
 
-### `renderToString()`
+### renderToString
 
 ```js
 ReactDOMServer.renderToString(element)
@@ -37,9 +41,11 @@ ReactDOMServer.renderToString(element)
 
 如果你在已有服务端渲染标记的节点上调用 [`ReactDOM.hydrate()`](https://zh-hans.reactjs.org/docs/react-dom.html#hydrate) 方法，React 将会保留该节点且只进行事件处理绑定，从而让你有一个非常高性能的首次加载体验。
 
-------
 
-### `renderToStaticMarkup()`
+
+
+
+### renderToStaticMarkup()
 
 ```js
 ReactDOMServer.renderToStaticMarkup(element)
@@ -49,9 +55,9 @@ ReactDOMServer.renderToStaticMarkup(element)
 
 如果你计划在前端使用 React 以使得标记可交互，请不要使用此方法。你可以在服务端上使用 [`renderToString`](https://zh-hans.reactjs.org/docs/react-dom-server.html#rendertostring) 或在前端上使用 [`ReactDOM.hydrate()`](https://zh-hans.reactjs.org/docs/react-dom.html#hydrate) 来代替此方法。
 
-------
 
-### `renderToNodeStream()`
+
+### renderToNodeStream
 
 ```js
 ReactDOMServer.renderToNodeStream(element)
@@ -67,9 +73,9 @@ ReactDOMServer.renderToNodeStream(element)
 >
 > 通过本方法返回的流会返回一个由 utf-8 编码的字节流。如果你需要另一种编码的流，请查看像 [iconv-lite](https://www.npmjs.com/package/iconv-lite) 这样的项目，它为转换文本提供了转换流。
 
-------
 
-### `renderToStaticNodeStream()`
+
+### renderToStaticNodeStream
 
 ```js
 ReactDOMServer.renderToStaticNodeStream(element)

@@ -1,10 +1,13 @@
 # ReactDOM
 
-如果你使用一个 `<script>` 标签引入 React，所有的顶层 API 都能在全局 `ReactDOM` 上调用。如果你使用 npm 和 ES6，你可以用 `import ReactDOM from 'react-dom'`。如果你使用 npm 和 ES5，你可以用 `var ReactDOM = require('react-dom')`。
+> 如果你使用一个 `<script>` 标签引入 React，所有的顶层 API 都能在全局 `ReactDOM` 上调用。如果你使用 npm 和 ES6，你可以用 `import ReactDOM from 'react-dom'`。如果你使用 npm 和 ES5，你可以用 `var ReactDOM = require('react-dom')`。
+>
 
 ### 本文速览
 
 `react-dom` 的 package 提供了可在应用顶层使用的 DOM（DOM-specific）方法，如果有需要，你可以把这些方法用于 React 模型以外的地方。不过一般情况下，大部分组件都不需要使用这个模块。
+
+`react-dom`API如下：
 
 - [`render()`](https://zh-hans.reactjs.org/docs/react-dom.html#render)
 - [`hydrate()`](https://zh-hans.reactjs.org/docs/react-dom.html#hydrate)
@@ -14,7 +17,11 @@
 
 
 
-## 参考
+------
+
+
+
+## API
 
 ### `render()`
 
@@ -22,25 +29,35 @@
 ReactDOM.render(element, container[, callback])
 ```
 
+三个参数：
+
+1. react元素，一般是jsx声明的根组件
+2. 容器，是dom中的一个交给react管理的根节点，一般而言是一个body的子元素，一般是通过querySelector/querySelectorAll/getElementById等方法获取的DOM节点
+3. 回调函数，在执行渲染或者更新的之后执行
+
+返回值：
+
+- 是这个组件的引用，也就是组件实例（或者针对无状态组件返回 null）
+
 在提供的 `container` 里渲染一个 React 元素，并返回对该组件的[引用](https://zh-hans.reactjs.org/docs/more-about-refs.html)（或者针对[无状态组件](https://zh-hans.reactjs.org/docs/components-and-props.html#function-and-class-components)返回 `null`）。
 
 如果 React 元素之前已经在 `container` 里渲染过，这将会对其执行更新操作，并仅会在必要时改变 DOM 以映射最新的 React 元素。
 
 如果提供了可选的回调函数，该回调将在组件被渲染或更新之后被执行。
 
-> 注意：
->
-> `ReactDOM.render()` 会控制你传入容器节点里的内容。当首次调用时，容器节点里的所有 DOM 元素都会被替换，后续的调用则会使用 React 的 DOM 差分算法（DOM diffing algorithm）进行高效的更新。
->
-> `ReactDOM.render()` 不会修改容器节点（只会修改容器的子节点）。可以在不覆盖现有子节点的情况下，将组件插入已有的 DOM 节点中。
->
-> `ReactDOM.render()` 目前会返回对根组件 `ReactComponent` 实例的引用。 但是，目前应该避免使用返回的引用，因为它是历史遗留下来的内容，而且在未来版本的 React 中，组件渲染在某些情况下可能会是异步的。 如果你真的需要获得对根组件 `ReactComponent` 实例的引用，那么推荐为根元素添加 [callback ref](https://zh-hans.reactjs.org/docs/more-about-refs.html#the-ref-callback-attribute)。
->
-> 使用 `ReactDOM.render()` 对服务端渲染容器进行 hydrate 操作的方式已经被废弃，并且会在 React 17 被移除。作为替代，请使用 [`hydrate()`](https://zh-hans.reactjs.org/docs/react-dom.html#hydrate)。
+**需要注意以下几点**： 
+
+1. ReactDOM.render()` 会控制你传入容器节点里的内容。当首次调用时，容器节点里的所有 DOM 元素都会被替换，后续的调用则会使用 React 的 DOM 差分算法（DOM diffing algorithm）进行高效的更新。
+
+2. ReactDOM.render()` 不会修改容器节点（只会修改容器的子节点）。可以在不覆盖现有子节点的情况下，将组件插入已有的 DOM 节点中。` 
+
+3. ReactDOM.render()` 目前会返回对根组件 `ReactComponent` 实例的引用。 但是，目前应该避免使用返回的引用，因为它是历史遗留下来的内容，而且在未来版本的 React 中，组件渲染在某些情况下可能会是异步的。 如果你真的需要获得对根组件 `ReactComponent` 实例的引用，那么推荐为根元素添加 [callback ref](https://zh-hans.reactjs.org/docs/more-about-refs.html#the-ref-callback-attribute)。使用 `ReactDOM.render()` 对服务端渲染容器进行 hydrate 操作的方式已经被废弃，并且会在 React 17 被移除。作为替代，请使用 [`hydrate()`](https://zh-hans.reactjs.org/docs/react-dom.html#hydrate)。
 
 
 
 ### `hydrate()`
+
+> `hydrate`是 React 中提供在初次渲染的时候，去复用原本已经存在的 DOM 节点，减少重新生成节点以及删除原本 DOM 节点的开销，来加速初次渲染的功能。主要使用场景是**服务端渲染或者像`prerender`等情况**。
 
 ```js
 ReactDOM.hydrate(element, container[, callback])
@@ -73,8 +90,6 @@ ReactDOM.unmountComponentAtNode(container)
 > 注意:
 >
 > `findDOMNode` 是一个访问底层 DOM 节点的应急方案（escape hatch）。在大多数情况下，不推荐使用该方法，因为它会破坏组件的抽象结构。[严格模式下该方法已弃用。](https://zh-hans.reactjs.org/docs/strict-mode.html#warning-about-deprecated-finddomnode-usage)
-
-
 
 ```js
 ReactDOM.findDOMNode(component)
