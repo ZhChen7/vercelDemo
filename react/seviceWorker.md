@@ -31,7 +31,7 @@
 
 > **注意**:  从Firefox44起，当使用 [AppCache](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache) 来提供离线页面支持时，会提示一个警告消息，来建议开发者使用 [Service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers) 来实现离线页面。([bug 1204581](https://bugzilla.mozilla.org/show_bug.cgi?id=1204581).)
 
-Service worker 最终要去解决这些问题。虽然 Service Worker 的语法比 AppCache 更加复杂，但是你可以使用 JavaScript 更加精细地控制 AppCache 的静默行为。有了它，你可以解决目前离线应用的问题，同时也可以做更多的事。 Service Worker 可以使你的应用先访问本地缓存资源，所以在离线状态时，在没有通过网络接收到更多的数据前，仍可以提供基本的功能（一般称之为 [Offline First](http://offlinefirst.org/)）。这是原生APP 本来就支持的功能，这也是相比于 web app，原生 app 更受青睐的主要原因。
+Service worker 最终要去解决这些问题。虽然 Service Worker 的语法比 AppCache 更加复杂，但是你可以使用 JavaScript 更加精细地控制 AppCache 的静默行为。有了它，你可以解决目前离线应用的问题，同时也可以做更多的事。 Service Worker 可以使你的应用先访问本地缓存资源，**所以在离线状态时，在没有通过网络接收到更多的数据前，仍可以提供基本的功能（一般称之为 [Offline First](http://offlinefirst.org/)）**。这是原生APP 本来就支持的功能，这也是相比于 web app，原生 app 更受青睐的主要原因。
 
 
 
@@ -221,11 +221,13 @@ self.addEventListener('fetch', function(event) {
         // response may be used only once
         // we need to save clone to put one copy in cache
         // and serve second one
+        // 为什么要这样做？这是因为请求和响应流只能被读取一次。为了给浏览器返回响应以及把它缓存起来，我们不得不克隆一份。所以原始的会返回给浏览器，克隆的会发送到缓存中。它们都是读取了一次。
         let responseClone = response.clone();
         
         caches.open('v1').then(function (cache) {
           cache.put(event.request, responseClone);
         });
+        
         return response;
       }).catch(function () {
         return caches.match('/sw-test/gallery/myLittleVader.jpg');
@@ -235,15 +237,110 @@ self.addEventListener('fetch', function(event) {
 });
 ~~~
 
+1. 这里我们 新增了一个 `install` 事件监听器，接着在事件上接了一个[`ExtendableEvent.waitUntil()`](https://developer.mozilla.org/zh-CN/docs/Web/API/ExtendableEvent/waitUntil) 方法——这会确保Service Worker 不会在 `waitUntil()` 里面的代码执行完毕之前安装完成。
+2. 在 `waitUntil()` 内，我们使用了 [`caches.open()`](https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage/open) 方法来创建了一个叫做 `v1` 的新的缓存，将会是我们的站点资源缓存的第一个版本。它返回了一个创建缓存的 promise，当它 resolved 的时候，我们接着会调用在创建的缓存示例上的一个方法 `addAll()`，这个方法的参数是一个由一组相对于 origin 的 URL 组成的数组，这些 URL 就是你想缓存的资源的列表。
+3. 如果 promise 被 rejected，安装就会失败，这个 worker 不会做任何事情。这也是可以的，因为你可以修复你的代码，在下次注册发生的时候，又可以进行尝试。
+4. 当安装成功完成之后， service worker 就会激活。在第一次你的 service worker 注册／激活时，这并不会有什么不同。但是当 service worker 更新 (稍后查看 [Updating your service worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers#updating_your_service_worker) 部分) 的时候 ，就不太一样了。
+
+> **注意**: [localStorage (en-US)](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) 跟 service worker 的 cache 工作原理很类似，但是它是同步的，所以不允许在 service workers 内使用。
+
+
+
+### 自定义请求的响应
+
+现在你已经将你的站点资源缓存了，你需要告诉 service worker 让它用这些缓存内容来做点什么。有了 `fetch` 事件，这是很容易做到的。
+
+每次任何被 service worker 控制的资源被请求到时，都会触发 `fetch` 事件，这些资源包括了指定的 scope 内的文档，和这些文档内引用的其他任何资源（比如 `index.html` 发起了一个跨域的请求来嵌入一个图片，这个也会通过 service worker 。）
+
+你可以给 service worker 添加一个 `fetch` 的事件监听器，接着调用 event 上的 `respondWith()` 方法来劫持我们的 HTTP 响应，然后你用可以用自己的方法来更新他们。
+
+```javascript
+this.addEventListener('fetch', function(event) {
+  event.respondWith(
+    // magic goes here
+  );
+});
+```
+
+我们可以用一个简单的例子开始，在任何情况下我们只是简单的响应这些缓存中的 url  和网络请求匹配的资源。
+
+```javascript
+this.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+  );
+});
+```
+
+`caches.match(event.request)` 允许我们对网络请求的资源和 cache 里可获取的资源进行匹配，查看是否缓存中有相应的资源。这个匹配通过 url 和 vary header进行，就像正常的 http 请求一样。
+
+
+
 ![image.png](https://i.loli.net/2021/09/08/4jXnQeaZH3ci2dM.png)
 
 
 
 
 
+## 恢复失败的请求
 
+在有 service worker cache 里匹配的资源时， `caches.match(event.request)` 是非常棒的。但是如果没有匹配资源呢？如果我们不提供任何错误处理，promise 就会 reject，同时也会出现一个网络错误。
 
+幸运的是，service worker 的基于 promise 的结构，使得提供更多的成功的选项变得微不足道。 我们可以这样做：
 
+```javascript
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+```
+
+如果 promise reject了， catch() 函数会执行默认的网络请求，意味着在网络可用的时候可以直接像服务器请求资源。
+
+如果我们足够聪明的话，我们就不会只是从服务器请求资源，而且还会把请求到的资源保存到缓存中，以便将来离线时所用！这意味着如果其他额外的图片被加入到 Star Wars 图库里，我们的 app 会自动抓取它们。下面就是这个诀窍：
+
+```javascript
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(resp) {
+      return resp || fetch(event.request).then(function(response) {
+        return caches.open('v1').then(function(cache) {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      });
+    })
+  );
+});
+```
+
+这里我们用 `fetch(event.request)` 返回了默认的网络请求，它返回了一个 promise 。当网络请求的 promise 成功的时候，我们 通过执行一个函数用 `caches.open('v1')` 来抓取我们的缓存，它也返回了一个 promise。当这个 promise 成功的时候， `cache.put()` 被用来把这些资源加入缓存中。资源是从 `event.request` 抓取的，它的响应会被 `response.clone()` 克隆一份然后被加入缓存。这个克隆被放到缓存中，它的原始响应则会返回给浏览器来给调用它的页面。
+
+为什么要这样做？这是因为请求和响应流只能被读取一次。为了给浏览器返回响应以及把它缓存起来，我们不得不克隆一份。所以原始的会返回给浏览器，克隆的会发送到缓存中。它们都是读取了一次。
+
+我们现在唯一的问题是当请求没有匹配到缓存中的任何资源的时候，以及网络不可用的时候，我们的请求依然会失败。让我们提供一个默认的回退方案以便不管发生了什么，用户至少能得到些东西：
+
+```javascript
+this.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function() {
+      return fetch(event.request).then(function(response) {
+        return caches.open('v1').then(function(cache) {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      });
+    }).catch(function() {
+      return caches.match('/sw-test/gallery/myLittleVader.jpg');
+    })
+  );
+});
+```
+
+因为只有新图片会失败，我们已经选择了回退的图片，一切都依赖我们之前看到的 `install` 事件侦听器中的安装过程。
 
 
 
