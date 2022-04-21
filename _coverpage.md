@@ -1,4 +1,4 @@
-# 学习笔记点滴积累 <small>0.0.1</small>
+# 修炼之路
 
 <a href="https://github.com/ZhChen7/vercelDemo">Github</a>
-<a href="#README">Get Started</a>
+<a href="#README">进入正文</a>

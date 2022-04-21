@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=PT+Sans&Source+Sans+Pro&Roboto+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Source+Sans+Pro:300,400,600");
 
 * {
     -webkit-font-smoothing: antialiased;
@@ -11,24 +11,6 @@
 
 body:not(.ready) {
     overflow: hidden
-}
-
-.search {
-    border-bottom: none !important
-}
-
-.search .input-wrap {
-    margin-top: 20px !important
-}
-
-.search input {
-    border: 1px solid var(--borderColor) !important;
-    background-color: var(--background) !important;
-    margin: 0 auto;
-    color: var(--textColor);
-    width: 90% !important;
-    border-radius: 15px;
-    text-indent: 15px
 }
 
 body:not(.ready) .app-nav,
@@ -54,7 +36,7 @@ div#app:empty:before {
 }
 
 .progress {
-    background-color: var(--accent);
+    background-color: var(--theme-color, #42b983);
     height: 2px;
     left: 0;
     position: fixed;
@@ -67,7 +49,7 @@ div#app:empty:before {
 
 .search .search-keyword,
 .search a:hover {
-    color: var(--accent)
+    color: var(--theme-color, #42b983)
 }
 
 .search .search-keyword {
@@ -83,16 +65,12 @@ html {
 body {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    color: var(--textColor);
-    font-family: var(--siteFont), Helvetica Neue, Arial, sans-serif;
-    font-size: var(--bodyFontSize);
+    color: #34495e;
+    font-family: Source Sans Pro, Helvetica Neue, Arial, sans-serif;
+    font-size: 15px;
     letter-spacing: 0;
     margin: 0;
     overflow-x: hidden
-}
-
-.markdown-section h2 {
-    color: #fff
 }
 
 img {
@@ -157,11 +135,11 @@ li input[type=checkbox] {
 
 .app-nav a.active,
 .app-nav a:hover {
-    color: var(--accent)
+    color: var(--theme-color, #42b983)
 }
 
 .app-nav a.active {
-    border-bottom: 2px solid var(--accent)
+    border-bottom: 2px solid var(--theme-color, #42b983)
 }
 
 .app-nav li {
@@ -228,9 +206,9 @@ li input[type=checkbox] {
 
 .github-corner svg {
     color: #fff;
-    fill: var(--accent);
-    height: 70px;
-    width: 70px
+    fill: var(--theme-color, #42b983);
+    height: 80px;
+    width: 80px
 }
 
 main {
@@ -252,7 +230,7 @@ main.hidden {
 }
 
 .anchor span {
-    color: var(--textColor)
+    color: #34495e
 }
 
 .anchor:hover {
@@ -260,7 +238,7 @@ main.hidden {
 }
 
 .sidebar {
-    border-right: 1px solid var(--borderColor);
+    border-right: 1px solid rgba(0, 0, 0, .07);
     overflow-y: auto;
     padding: 40px 0 0;
     position: absolute;
@@ -268,7 +246,7 @@ main.hidden {
     bottom: 0;
     left: 0;
     transition: transform .25s ease-out;
-    width: 300px;
+    width: 400px;
     z-index: 20
 }
 
@@ -291,7 +269,9 @@ main.hidden {
 
 .sidebar .sidebar-nav {
     line-height: 2em;
-    padding-bottom: 40px;
+    padding: 0 0 40px 20px;
+    
+    /* border: 1px solid red; */
 }
 
 .sidebar li.collapse .app-sub-sidebar {
@@ -315,7 +295,10 @@ main.hidden {
 
 .sidebar ul li a {
     border-bottom: none;
-    display: block
+    text-decoration: underline !important;
+    display: inline-block;
+    color: #000 !important;
+
 }
 
 .sidebar ul li ul {
@@ -341,6 +324,7 @@ main.hidden {
 
 .sidebar-toggle {
     background-color: transparent;
+    background-color: hsla(0, 0%, 100%, .8);
     border: 0;
     outline: none;
     padding: 10px;
@@ -359,7 +343,7 @@ main.hidden {
 }
 
 .sidebar-toggle span {
-    background-color: var(--accent);
+    background-color: var(--theme-color, #42b983);
     display: block;
     margin-bottom: 4px;
     width: 16px;
@@ -383,7 +367,7 @@ body.sticky .sidebar-toggle {
 
 .markdown-section {
     margin: 0 auto;
-    max-width: 90%;
+    max-width: 80%;
     padding: 30px 15px 40px;
     position: relative
 }
@@ -434,7 +418,7 @@ body.sticky .sidebar-toggle {
 
 .markdown-section p.tip,
 .markdown-section tr:nth-child(2n) {
-    background-color: var(--codeBackgroundColor)
+    background-color: #f8f8f8
 }
 
 .markdown-section p.tip {
@@ -553,6 +537,7 @@ body.close .content {
     }
 
     body.close .sidebar-toggle {
+        background-color: hsla(0, 0%, 100%, .8);
         transition: background-color 1s;
         width: 284px;
         padding: 10px
@@ -575,23 +560,6 @@ body.close .content {
     .github-corner .octo-arm {
         -webkit-animation: octocat-wave .56s ease-in-out;
         animation: octocat-wave .56s ease-in-out
-    }
-
-    #docsify-darklight-theme {
-        position: absolute;
-        left: 10px;
-        top: 15px;
-        width: 25px;
-        height: 25px;
-        background-repeat: no-repeat;
-        background-image: var(--toogleImage);
-        background-size: cover;
-        cursor: pointer;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        transition: background-image .15s ease-in-out .15s
     }
 }
 
@@ -637,12 +605,12 @@ section.cover {
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
+    width: 100vw;
     display: none
 }
 
 section.cover.show {
-    display: flex;
-    background: var(--coverBackground) !important
+    display: flex
 }
 
 section.cover.has-mask .mask {
@@ -658,7 +626,7 @@ section.cover .cover-main {
     flex: 1;
     margin: -20px 16px 0;
     text-align: center;
-    z-index: 1
+    position: relative
 }
 
 section.cover a {
@@ -709,9 +677,9 @@ section.cover ul {
 
 section.cover .cover-main>p:last-child a {
     border-radius: 2rem;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--theme-color, #42b983);
     box-sizing: border-box;
-    color: var(--accent);
+    color: var(--theme-color, #42b983);
     display: inline-block;
     font-size: 1.05rem;
     letter-spacing: .1rem;
@@ -722,7 +690,7 @@ section.cover .cover-main>p:last-child a {
 }
 
 section.cover .cover-main>p:last-child a:last-child {
-    background-color: var(--accent);
+    background-color: var(--theme-color, #42b983);
     color: #fff
 }
 
@@ -736,49 +704,57 @@ section.cover .cover-main>p:last-child a:hover {
 }
 
 section.cover blockquote>p>a {
-    border-bottom: 2px solid var(--accent);
+    border-bottom: 2px solid var(--theme-color, #42b983);
     transition: color .3s
 }
 
 section.cover blockquote>p>a:hover {
-    color: var(--accent)
+    color: var(--theme-color, #42b983)
 }
 
 .sidebar,
 body {
-    background-color: var(--background);
-    transition: background-image .15s ease-in-out .15s
+    background-color: #fff
 }
 
 .sidebar {
-    color: var(--textColor)
+    color: #364149
 }
 
 .sidebar li {
-    margin: 6px 0
+    margin: 6px 12px;
+    /* border: 1px solid red; */
+    font-size: 16px;
+    /* font-weight: bold; */
 }
 
 .sidebar ul li a {
-    color: var(--sidebarSublink);
-    font-size: 14px;
-    font-weight: 400;
+    color: #505d6b;
+    font-size: 18px;
     overflow: hidden;
     text-decoration: none;
     text-overflow: ellipsis;
-    white-space: nowrap
+    white-space: nowrap;
+    color: #333;
 }
 
 .sidebar ul li a:hover {
-    text-decoration: underline
+    text-decoration: underline;
+    color: red;
 }
 
-.sidebar ul li ul {
-    padding: 0
+.sidebar>ul>li>ul {
+    padding: 0 0 0 0;
+    font-size: 16px;
+}
+
+.sidebar>ul>li>ul>li {
+    border: 1px solid red !important;
 }
 
 .sidebar ul li.active>a {
     border-right: 2px solid;
-    color: var(--accent);
+    color: var(--theme-color, #42b983);
     font-weight: 600
 }
 
@@ -793,14 +769,13 @@ body {
 .markdown-section h3,
 .markdown-section h4,
 .markdown-section strong {
-    color: var(--textColor);
+    color: #2c3e50;
     font-weight: 600
 }
 
 .markdown-section a {
-    color: var(--accent);
-    font-weight: 600;
-    text-decoration: none
+    color: var(--theme-color, #42b983);
+    font-weight: 600
 }
 
 .markdown-section h1 {
@@ -849,8 +824,8 @@ body {
 }
 
 .markdown-section blockquote {
-    border-left: 4px solid var(--accent);
-    color: var(--blockQuoteColor);
+    border-left: 4px solid var(--theme-color, #42b983);
+    color: #858585;
     margin: 2em 0;
     padding-left: 20px
 }
@@ -868,31 +843,98 @@ body {
     color: #7f8c8d
 }
 
-.markdown-section code {
-    border-radius: 2px;
-    color: var(--highlightColor);
-    font-size: .9rem;
-    margin: 0 2px;
-    padding: 3px 5px;
-    white-space: pre-wrap;
-    font-weight: 700
+.markdown-section code,
+.markdown-section output:after,
+.markdown-section pre {
+    font-family: Roboto Mono, Monaco, courier, monospace
 }
 
 .markdown-section code,
 .markdown-section pre {
-    background-color: var(--codeBackgroundColor);
-    font-family: var(--codeFontFamily)
+    background-color: #f8f8f8
+}
+
+.markdown-section output,
+.markdown-section pre {
+    margin: 1.2em 0;
+    position: relative
+}
+
+.markdown-section output,
+.markdown-section pre>code {
+    border-radius: 2px;
+    display: block
+}
+
+.markdown-section output:after,
+.markdown-section pre>code {
+    -moz-osx-font-smoothing: initial;
+    -webkit-font-smoothing: initial
+}
+
+.markdown-section code {
+    border-radius: 2px;
+    color: #e96900;
+    margin: 0 2px;
+    padding: 3px 5px;
+    white-space: pre-wrap
+}
+
+.markdown-section>:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) code {
+    font-size: .8rem
 }
 
 .markdown-section pre {
-    -moz-osx-font-smoothing: initial;
-    -webkit-font-smoothing: initial;
-    line-height: 1.5rem;
-    margin: 1.2em 0;
-    overflow: auto;
     padding: 0 1.4rem;
-    position: relative;
+    line-height: 1.5rem;
+    overflow: auto;
     word-wrap: normal
+}
+
+.markdown-section pre>code {
+    color: #525252;
+    font-size: .8rem;
+    padding: 2.2em 5px;
+    line-height: inherit;
+    margin: 0 2px;
+    max-width: inherit;
+    overflow: inherit;
+    white-space: inherit
+}
+
+.markdown-section output {
+    padding: 1.7rem 1.4rem;
+    border: 1px dotted #ccc
+}
+
+.markdown-section output>:first-child {
+    margin-top: 0
+}
+
+.markdown-section output>:last-child {
+    margin-bottom: 0
+}
+
+.markdown-section code:after,
+.markdown-section code:before,
+.markdown-section output:after,
+.markdown-section output:before {
+    letter-spacing: .05rem
+}
+
+.markdown-section output:after,
+.markdown-section pre:after {
+    color: #ccc;
+    font-size: .6rem;
+    font-weight: 600;
+    height: 15px;
+    line-height: 15px;
+    padding: 5px 10px 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    content: attr(data-lang)
 }
 
 .token.cdata,
@@ -924,7 +966,7 @@ body {
 }
 
 .token.string {
-    color: var(--accent)
+    color: var(--theme-color, #42b983)
 }
 
 .token.selector {
@@ -946,7 +988,7 @@ body {
 .token.control,
 .token.directive,
 .token.unit {
-    color: var(--accent)
+    color: var(--theme-color, #42b983)
 }
 
 .token.function,
@@ -991,67 +1033,10 @@ body {
     cursor: help
 }
 
-.markdown-section pre>code {
-    -moz-osx-font-smoothing: initial;
-    -webkit-font-smoothing: initial;
-    background-color: var(--codeBackgroundColor);
-    border-radius: 2px;
-    color: var(--codeTextColor);
-    display: block;
-    font-family: Roboto Mono, Monaco, courier, monospace;
-    font-size: .8rem;
-    line-height: inherit;
-    margin: 0 2px;
-    max-width: inherit;
-    overflow: inherit;
-    padding: 2.2em 5px;
-    white-space: inherit
-}
-
-.markdown-section code:after,
-.markdown-section code:before {
-    letter-spacing: .05rem
-}
-
 code .token {
     -moz-osx-font-smoothing: initial;
     -webkit-font-smoothing: initial;
     min-height: 1.5rem;
     position: relative;
     left: auto
-}
-
-pre:after {
-    color: var(--codeTypeColor);
-    content: attr(data-lang);
-    font-size: .6rem;
-    font-weight: 600;
-    height: 15px;
-    line-height: 15px;
-    padding: 5px 10px 0;
-    position: absolute;
-    right: 0;
-    text-align: right;
-    top: 0
-}
-
-#docsify-darklight-theme {
-    position: absolute;
-    right: 10px;
-    top: 15px;
-    width: 25px;
-    height: 25px;
-    background-repeat: no-repeat;
-    background-image: var(--toogleImage);
-    background-size: cover;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    transition: background-image .15s ease-in-out .15s
-}
-
-#docsify-darklight-theme p {
-    visibility: hidden
 }
