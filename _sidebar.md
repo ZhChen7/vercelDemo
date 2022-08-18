@@ -115,7 +115,7 @@
 
 - Docker
 - gitlab
-- Git
+- ci/cd
 
 ## 计算机网络
 
@@ -126,3 +126,4 @@
 ## 环境搭建
 
 - [新手环境搭建指南](/environment/environment.md)
+- [前端workflow](/environment/workflow.md)
