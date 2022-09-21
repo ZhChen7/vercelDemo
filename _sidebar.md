@@ -127,3 +127,4 @@
 
 - [新手环境搭建指南](/environment/environment.md)
 - [前端workflow](/environment/workflow.md)
+- [前端workflow精简](/environment/workflowDetail.md)
