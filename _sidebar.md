@@ -130,3 +130,4 @@
 - [前端workflow精简](/environment/workflowDetail.md)
 - [拆包](/environment/openBundle.md)
 - [whistle工具](/tool/whistle.md)
+- [拆包](/environment/spiltChunk.md)
